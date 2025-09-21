@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Photos ko store karne ke liye global variable
     let photos = [];
     const photoUrlInput = document.getElementById('photoUrl');
     const photoTitleInput = document.getElementById('photoTitle');
     const addButton = document.getElementById('add-btn');
     const photoGallery = document.getElementById('photo-gallery');
 
-    // Function to fetch and display photos from the API
+
     async function fetchPhotos() {
         try {
             const response = await fetch('http://localhost:5216/api/Photos');
@@ -15,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
-            photos = await response.json(); // Photos ko array mein save karo
+            photos = await response.json();
             
             displayPhotos(photos);
             
@@ -59,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to display photos on the webpage
+   
     function displayPhotos(photos) {
         photoGallery.innerHTML = '';
 
@@ -79,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // DELETE request ko API par bhejne ka function
+   
     async function deletePhoto(id) {
         try {
             const response = await fetch(`http://localhost:5216/api/Photos/${id}`, {
@@ -95,9 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // EDIT request ko API par bhejne ka function
+  
     async function updatePhoto(id, newTitle) {
-        // Purani photo dhoondo
         const photoToUpdate = photos.find(p => p.id == id);
         if (!photoToUpdate) {
             console.error('Photo not found.');
@@ -110,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // Yeh code ab purana URL bhi bhej raha hai
+               
                 body: JSON.stringify({ id: id, title: newTitle, url: photoToUpdate.url }) 
             });
 
@@ -124,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Event delegation
+    
     photoGallery.addEventListener('click', (event) => {
         if (event.target.classList.contains('delete-btn')) {
             const photoId = event.target.dataset.id;
@@ -142,6 +140,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addButton.addEventListener('click', addPhoto);
 
-    // Page load hote hi photos fetch karo
     fetchPhotos();
 });
